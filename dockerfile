@@ -9,5 +9,5 @@ RUN wget https://downloads.apache.org/tomcat/tomcat-7/v7.0.108/bin/apache-tomcat
 RUN unzip apache-tomcat-7.0.108.zip
 RUN rm apache-tomcat-7.0.108.zip
 RUN chmod -R 755 apache-tomcat-7.0.108
-COPY . /home/tomcat1/apache-tomcat-7.0.108/webapp/
+COPY target/java-jsp-diary.war /apache-tomcat-7.0.108/webapps/
 EXPOSE 8080
