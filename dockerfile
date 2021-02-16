@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-MAINTNER  krishna
+MAINTAINER  krishna
 RUN apt-get update  && apt-get install openjdk-8* -y && apt-get install net-tools -y
 RUN apt-get update && apt-get install curl -y
 RUN apt-get install wget -y && apt-get install unzip -y 
