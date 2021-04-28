@@ -46,6 +46,18 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+   	 <repository>
+                        <id>javarepo</id>
+                        <name>java-jsp-repo</name>
+                        <url>http://18.189.182.152:8081/repository/mvn1_release/</url>
+    	</repository>
+    	<snapshotRepository>
+                        <id>snaprepo</id>
+                        <name>snap-java-jsp-repo</name>
+                        <url>http://18.189.182.152:8081/repository/mvn_snapshot/</url>
+    	</snapshotRepository>
+    </distributionManagement>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
