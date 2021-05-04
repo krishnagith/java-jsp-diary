@@ -1,0 +1,113 @@
+
+pipeline{
+    agent{
+        label 'maven'
+    }
+    
+    stages{
+        stage("initalize"){
+            steps{
+                script{
+                    properties([
+                       parameters([
+                            string(name:'lifecycle', defaultValue:'install', description:'maven lifecycle'),
+                            string(name:'environment', defaultValue:'dev', description:'building environment'),
+                            string(name:'branch', defaultValue:'master', description:'master or release branch')
+                        ]) 
+                    ])
+                }
+            }
+        }
+        stage("cleanup_workspace"){
+            steps{
+                cleanWs()
+            }
+        }
+        stage("gitclone"){
+            steps{
+                script{sh '''
+                    git clone -b $branch git@github.com:krishnagith/java-jsp-diary.git
+                    git clone git@github.com:krishnagith/VersionTracking.git
+                    git clone git@github.com:krishnagith/Baseversion.git
+                    '''
+                }
+            }
+        }
+        stage("master_version"){
+            when {
+                expression {"$branch" == 'master'}
+            }
+            steps{
+                script{
+                    sh '''
+                    bash ${WORKSPACE}/VersionTracking/master_incrementalversion.sh ${WORKSPACE}
+                    '''
+                    }
+                }
+            }
+        
+        stage("release_version"){
+            when {
+                expression {"$branch" == "release/19.9"}
+            }
+            steps{
+                script{
+                    sh ''' 
+                    bash ${WORKSPACE}/VersionTracking/release_incrementversion.sh ${WORKSPACE}
+                    '''
+                }
+            }
+        }
+        stage("build_push"){
+            steps{
+                script{
+                    sh '''
+                     cd ${WORKSPACE}/java-jsp-diary
+                     mvn clean deploy
+                    '''
+                }
+            }
+        }
+        stage("deploy"){
+            parallel{
+                stage("deploy-qa"){
+                   agent {
+                       label "qa"
+                   } 
+                   steps{
+                       script{
+                           echo "deploying on QA $hostname"
+                       }
+                      
+                    
+                   }
+                }
+                stage("deploy-dev"){
+                    agent {
+                        label "dev"
+                    }
+                    steps{
+                        script{
+                            echo "deploying on dev $hostname"
+                        }
+                    }
+                }
+            }
+        }
+            stage("deploy-prod"){
+                
+                agent {
+                    label "prod"
+                }
+                steps{
+                    input ('do you want to proceed ?')
+                    script{
+                        echo " deploy on prod $hostname"
+                    }
+                }
+
+            }
+            
+        
+    }
+}
