@@ -50,12 +50,12 @@
    	 <repository>
                         <id>javarepo</id>
                         <name>java-jsp-repo</name>
-                        <url>http://18.116.86.100:8081/repository/mvn1_release/</url>
+                        <url>http://3.133.147.250:8081/repository/mvn1_release/</url>
     	</repository>
     	<snapshotRepository>
                         <id>snaprepo</id>
                         <name>snap-java-jsp-repo</name>
-                        <url>http://18.116.86.100:8081/repository/mvn_snapshot/</url>
+                        <url>http://3.133.147.250:8081/repository/mvn_snapshot/</url>
     	</snapshotRepository>
     </distributionManagement>
 
